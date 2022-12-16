@@ -1041,6 +1041,10 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 	 */
 	private $container;
 
+
+    var $reportName = '';
+    var $computedDate = '';
+
 	/**
 	 * @param mixed[] $config
 	 * @param \Mpdf\Container\ContainerInterface|null $container Experimental container to override internal services
@@ -9843,6 +9847,12 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 				if ($this->y == $this->h) {
 					$top_y = $this->y = ($this->h + 0.01);
 				}
+
+                if($n == 1) {
+                    $html = str_replace('{REPORTNAME}',"<span class='reportName'>{$this->computedDate}</span>",$html);
+                } else {
+                    $html = str_replace('{REPORTNAME}',"<span class='reportName'>".$this->reportName."</span>",$html);
+                }
 
 				// Replace of page number aliases and date format
 				$html = $this->aliasReplace($html, $pnstr, $pntstr, $nb);
@@ -27519,5 +27529,13 @@ class Mpdf implements \Psr\Log\LoggerAwareInterface
 
 		return $html;
 	}
+
+    function setReportName($value) {
+        $this->reportName = $value;
+    }
+
+    function setComputedDate($value) {
+        $this->computedDate = $value;
+    }
 
 }
